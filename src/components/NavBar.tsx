@@ -3,10 +3,11 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAccount, useConnect, useDisconnect } from "wagmi";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 
 const links = [
   { href: "/", label: "Home" },
+  { href: "/onboarding", label: "Get Started" },
   { href: "/create", label: "Create Proof" },
   { href: "/verify", label: "Verify Proof" },
   { href: "/dashboard", label: "My Proofs" },
@@ -19,11 +20,16 @@ export default function NavBar() {
   const { connect, connectors, status } = useConnect();
   const { disconnect } = useDisconnect();
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const shortAddress = useMemo(() => {
-    if (!address) return "";
+    if (!address || !isMounted) return "";
     return `${address.slice(0, 6)}...${address.slice(-4)}`;
-  }, [address]);
+  }, [address, isMounted]);
 
   const handleConnect = () => {
     const connector = connectors[0];
@@ -73,7 +79,11 @@ export default function NavBar() {
         <div className="flex items-center gap-2 sm:gap-3">
           {/* Desktop wallet button */}
           <div className="hidden items-center md:flex">
-            {!isConnected ? (
+            {!isMounted ? (
+              <div className="inline-flex items-center justify-center rounded-full bg-slate-200 px-4 py-1.5 text-[11px] font-semibold text-slate-600 shadow-sm animate-pulse">
+                Loading...
+              </div>
+            ) : !isConnected ? (
               <button
                 type="button"
                 onClick={handleConnect}
@@ -158,7 +168,11 @@ export default function NavBar() {
           </div>
 
           <div className="mt-3 border-t border-slate-200/70 pt-3 dark:border-slate-800">
-            {!isConnected ? (
+            {!isMounted ? (
+              <div className="flex w-full items-center justify-center rounded-full bg-slate-200 px-3 py-2 text-xs font-semibold text-slate-600 shadow-sm animate-pulse">
+                Loading...
+              </div>
+            ) : !isConnected ? (
               <button
                 type="button"
                 onClick={() => {

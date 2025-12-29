@@ -28,6 +28,12 @@ export default function Home() {
             </div>
             <div className="flex flex-wrap items-center gap-3 pt-1">
               <Link
+                href="/onboarding"
+                className="inline-flex items-center justify-center rounded-full bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-indigo-600/30 transition hover:translate-y-0.5 hover:bg-indigo-700"
+              >
+                Get Started
+              </Link>
+              <Link
                 href="/create"
                 className="inline-flex items-center justify-center rounded-full bg-slate-900 px-5 py-2.5 text-sm font-semibold text-slate-50 shadow-lg shadow-slate-900/30 transition hover:translate-y-0.5 hover:bg-slate-800 dark:bg-slate-50 dark:text-slate-900 dark:hover:bg-slate-200"
               >

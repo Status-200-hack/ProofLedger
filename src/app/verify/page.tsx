@@ -70,7 +70,7 @@ export default function VerifyProofPage() {
                 type="text"
                 value={proofId}
                 onChange={(e) => setProofId(e.target.value)}
-                placeholder="Enter proof ID or link code (e.g., 0 or l62t)"
+                placeholder="Enter proof ID or link code"
                 className="w-full rounded-2xl border border-zinc-200 bg-white/70 px-4 py-3 text-sm text-zinc-900 shadow-sm outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 dark:border-zinc-700 dark:bg-zinc-900/70 dark:text-white dark:focus:border-indigo-400 dark:focus:ring-indigo-900/40"
                 required
               />

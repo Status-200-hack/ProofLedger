@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@coinbase/wallet-sdk": "^4.3.7",
+    "@heroicons/react": "^2.2.0",
     "@tanstack/react-query": "^5.90.12",
     "@walletconnect/ethereum-provider": "^2.21.10",
     "ethers": "^6.16.0",
