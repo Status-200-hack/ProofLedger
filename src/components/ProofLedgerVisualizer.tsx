@@ -13,7 +13,7 @@ type Proof = {
   timestamp: bigint;
 };
 
-export default function ProofChainVisualizer() {
+export default function ProofLedgerVisualizer() {
   const { address, isConnected } = useAccount();
   const chainRef = useRef<HTMLDivElement | null>(null);
 

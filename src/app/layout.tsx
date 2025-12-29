@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "ProofChain",
+  title: "ProofLedger",
   description: "Proof-of-existence dApp for the Ethereum Sepolia testnet",
 };
 

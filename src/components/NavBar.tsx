@@ -44,7 +44,7 @@ export default function NavBar() {
             className="text-lg font-semibold tracking-tight text-slate-900 dark:text-slate-50 sm:text-xl"
             onClick={closeMobile}
           >
-            ProofChain
+            ProofLedger
           </Link>
           {/* Desktop links */}
           <div className="hidden items-center gap-2 text-xs font-medium text-slate-600 dark:text-slate-300 md:flex md:text-sm md:gap-3">

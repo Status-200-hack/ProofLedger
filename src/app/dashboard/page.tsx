@@ -2,7 +2,7 @@
 
 import { useAccount } from "wagmi";
 import ProofList from "@/components/ProofList";
-import ProofChainVisualizer from "@/components/ProofChainVisualizer";
+import ProofLedgerVisualizer from "@/components/ProofLedgerVisualizer";
 
 export default function DashboardPage() {
   const { isConnected } = useAccount();
@@ -30,7 +30,7 @@ export default function DashboardPage() {
         </header>
 
         {/* Blockchain-inspired visual chain */}
-        <ProofChainVisualizer />
+        <ProofLedgerVisualizer />
 
         {!isConnected ? (
           <div className="rounded-3xl border border-white/10 bg-white/70 p-6 text-sm shadow-lg backdrop-blur-xl dark:border-white/5 dark:bg-white/[0.03]">

@@ -12,13 +12,13 @@ export default function AboutPage() {
         <header className="space-y-3">
           <p className="inline-flex items-center gap-2 rounded-full bg-indigo-100/80 px-3 py-1 text-xs font-semibold text-indigo-700 shadow-sm ring-1 ring-indigo-500/10 dark:bg-indigo-500/15 dark:text-indigo-200">
             <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-            About ProofChain
+            About ProofLedger
           </p>
           <h1 className="text-3xl font-semibold tracking-tight text-slate-900 dark:text-slate-50 sm:text-4xl">
             Proof-of-existence for real-world documents.
           </h1>
           <p className="max-w-2xl text-sm leading-relaxed text-slate-600 dark:text-slate-400 sm:text-base">
-            ProofChain lets you anchor the existence of any digital artifact on Ethereum Sepolia,
+            ProofLedger lets you anchor the existence of any digital artifact on Ethereum Sepolia,
             without revealing its contents. It&apos;s a lightweight, verifiable timestamp for your
             most important files.
           </p>
@@ -27,10 +27,10 @@ export default function AboutPage() {
         <section className="grid gap-6 rounded-3xl border border-white/10 bg-white/70 p-6 text-sm shadow-lg backdrop-blur-xl dark:border-white/5 dark:bg-white/[0.03] sm:p-8">
           <div>
             <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-50">
-              What is ProofChain?
+              What is ProofLedger?
             </h2>
             <p className="mt-2 text-slate-600 dark:text-slate-400">
-              ProofChain is a proof-of-existence dApp. Instead of uploading full documents to a
+              ProofLedger is a proof-of-existence dApp. Instead of uploading full documents to a
               blockchain, you upload them to IPFS and store only a small fingerprint (hash / CID) on
               Ethereum. This creates an immutable record that the file existed at a specific point in
               time, owned by a specific wallet address.
@@ -45,7 +45,7 @@ export default function AboutPage() {
               <p className="mt-2 text-slate-600 dark:text-slate-400">
                 Many workflows rely on private documents—contracts, NDAs, designs, research, invoices.
                 Proving that a file existed before a certain date is hard without trusting a central
-                system. ProofChain gives you an independent, tamper-resistant timestamp and ownership
+                system. ProofLedger gives you an independent, tamper-resistant timestamp and ownership
                 record for those files.
               </p>
             </div>
@@ -75,7 +75,7 @@ export default function AboutPage() {
 
           <div>
             <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50">
-              How ProofChain works
+              How ProofLedger works
             </h3>
             <ol className="mt-2 list-decimal space-y-1 pl-5 text-slate-600 dark:text-slate-400">
               <li>Upload a file and pin it to IPFS to get a content identifier (CID).</li>

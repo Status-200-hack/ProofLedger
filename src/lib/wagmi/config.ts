@@ -10,7 +10,7 @@ export const wagmiConfig = createConfig({
   transports: {
     [sepolia.id]: http(SEPOLIA_RPC_URL),
   },
-  connectors: [injected({ shimDisconnect: true }), coinbaseWallet({ appName: "ProofChain" })],
+  connectors: [injected({ shimDisconnect: true }), coinbaseWallet({ appName: "ProofLedger" })],
   ssr: true,
 });
 

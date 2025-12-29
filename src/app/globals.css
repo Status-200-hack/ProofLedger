@@ -29,7 +29,7 @@ body {
     "Segoe UI", sans-serif;
 }
 
-/* Animation utilities for ProofChain visuals */
+/* Animation utilities for ProofLedger visuals */
 @keyframes pc-block-enter {
   0% {
     opacity: 0;

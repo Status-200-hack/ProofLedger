@@ -1,6 +1,6 @@
-# ProofChain
+# ProofLedger
 
-ProofChain is a proof‑of‑existence dApp built on **Ethereum Sepolia**, letting users anchor document fingerprints (IPFS CIDs / hashes) on‑chain and verify them later via shareable links.
+ProofLedger is a proof‑of‑existence dApp built on **Ethereum Sepolia**, letting users anchor document fingerprints (IPFS CIDs / hashes) on‑chain and verify them later via shareable links.
 
 The frontend is a modern **Next.js App Router** app with a **Web3 SaaS** feel, and the backend logic is a simple, auditable **Hardhat** smart contract.
 
@@ -62,7 +62,7 @@ The frontend is a modern **Next.js App Router** app with a **Web3 SaaS** feel, a
 ## Project Structure
 
 ```text
-ProofChain/
+ProofLedger/
   contracts/
     ProofRegistry.sol        # Solidity contract
   scripts/
@@ -84,7 +84,7 @@ ProofChain/
       FileUpload.tsx
       ProofForm.tsx
       ProofList.tsx
-      ProofChainVisualizer.tsx
+      ProofLedgerVisualizer.tsx
     lib/
       abi/proofRegistry.ts   # ABI + address helper
       wagmi/config.ts        # wagmi/viem client config
@@ -248,7 +248,7 @@ Built with:
 - [Hardhat](https://hardhat.org)
 - [Pinata](https://www.pinata.cloud)
 
-# ProofChain
+# ProofLedger
 
 Proof-of-existence dApp built with Next.js 14 (App Router), wagmi + ethers v6, Tailwind CSS, and Hardhat. Deploys a `ProofRegistry` contract to Ethereum Sepolia to anchor document hashes or CIDs on-chain.
 
