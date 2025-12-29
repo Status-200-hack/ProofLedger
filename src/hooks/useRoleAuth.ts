@@ -61,7 +61,7 @@ export const useRoleAuth = (
         isOwner: false,
         canUpdate: false,
         canCreate: false,
-        userRole: null as const,
+        userRole: null,
         authorityAddresses: [],
       };
     }
