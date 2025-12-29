@@ -36,6 +36,47 @@ export interface UseCaseConfig {
 }
 
 export const USE_CASES: Record<string, UseCaseConfig> = {
+  general: {
+    id: "general",
+    label: "General Documents",
+    description: "Any document requiring proof-of-existence and timestamp verification",
+    icon: "📄",
+    authorityRole: "Document Creator",
+    ownerRole: "Document Owner",
+    verifierRole: "Anyone",
+    allowsUpdates: true,
+    documentTypes: [
+      "Contract",
+      "Agreement",
+      "Report",
+      "Certificate",
+      "Invoice",
+      "Receipt",
+      "Proposal",
+      "Specification",
+      "Other Document"
+    ],
+    workflowSteps: [
+      "Document Upload",
+      "Blockchain Registration",
+      "Verification Link Generation",
+      "Public Verification"
+    ],
+    verificationRules: {
+      publicAccess: true,
+      requiresWallet: false,
+      allowsSharing: true
+    },
+    metadata: {
+      primaryColor: "#64748b", // slate-500
+      terminology: {
+        upload: "Create Proof",
+        verify: "Verify Document",
+        authority: "Document Creator"
+      }
+    }
+  },
+
   real_estate: {
     id: "real_estate",
     label: "Real Estate / RERA",
@@ -258,7 +299,7 @@ export interface UseCaseSelection {
 /**
  * Default use case for fallback scenarios
  */
-export const DEFAULT_USE_CASE: UseCaseId = 'real_estate';
+export const DEFAULT_USE_CASE: UseCaseId = 'general';
 
 /**
  * Platform configuration that applies across all use cases

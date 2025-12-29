@@ -45,7 +45,72 @@ export default function OnboardingPage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {Object.entries(USE_CASES).map(([key, useCase]) => (
+            {/* General Use Case - First in grid with special styling */}
+            <Link
+              href={`/create?type=general`}
+              className="group relative rounded-2xl border border-indigo-200/70 bg-gradient-to-br from-indigo-50/90 to-slate-50/80 p-6 shadow-md shadow-indigo-900/10 backdrop-blur transition-all duration-300 hover:shadow-xl hover:shadow-indigo-200/50 hover:-translate-y-1 dark:border-indigo-700/50 dark:bg-gradient-to-br dark:from-indigo-900/30 dark:to-slate-900/70 dark:hover:shadow-indigo-900/50"
+            >
+              {/* Popular Badge */}
+              <div className="absolute -top-3 -right-3 bg-gradient-to-r from-indigo-500 to-purple-600 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg border-2 border-white dark:border-slate-800 z-10">
+                ⭐ Popular
+              </div>
+              
+              {/* Icon and Arrow */}
+              <div className="flex items-start justify-between mb-4">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-slate-100 dark:bg-slate-700 text-2xl">
+                  📄
+                </div>
+                <ArrowRightIcon className="h-5 w-5 text-indigo-500 transition-all duration-300 group-hover:translate-x-1 group-hover:text-indigo-600 dark:text-indigo-400 dark:group-hover:text-indigo-300" />
+              </div>
+              
+              <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-50 mb-2">
+                General Documents
+              </h3>
+              
+              <p className="text-sm text-slate-600 dark:text-slate-400 mb-4 leading-relaxed">
+                Any document requiring proof-of-existence and timestamp verification
+              </p>
+
+              {/* Role Information */}
+              <div className="space-y-2 mb-4">
+                <div className="flex items-center justify-between text-xs">
+                  <span className="font-medium text-slate-500 dark:text-slate-400">Authority:</span>
+                  <span className="text-slate-700 dark:text-slate-300 font-medium">Document Creator</span>
+                </div>
+                <div className="flex items-center justify-between text-xs">
+                  <span className="font-medium text-slate-500 dark:text-slate-400">Owner:</span>
+                  <span className="text-slate-700 dark:text-slate-300 font-medium">Document Owner</span>
+                </div>
+                <div className="flex items-center justify-between text-xs">
+                  <span className="font-medium text-slate-500 dark:text-slate-400">Verifier:</span>
+                  <span className="text-slate-700 dark:text-slate-300 font-medium">Anyone</span>
+                </div>
+              </div>
+
+              {/* Features */}
+              <div className="flex items-center gap-3 pt-3 border-t border-slate-200/60 dark:border-slate-700/60">
+                <div className="flex items-center gap-1">
+                  <div className="h-2 w-2 rounded-full bg-emerald-400" />
+                  <span className="text-xs text-slate-500 dark:text-slate-400">Updates</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <div className="h-2 w-2 rounded-full bg-blue-400" />
+                  <span className="text-xs text-slate-500 dark:text-slate-400">Public</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <div className="h-2 w-2 rounded-full bg-purple-400" />
+                  <span className="text-xs text-slate-500 dark:text-slate-400">Flexible</span>
+                </div>
+              </div>
+
+              {/* Hover Effect */}
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-5 transition-opacity duration-300 pointer-events-none rounded-2xl bg-indigo-500" />
+            </Link>
+
+            {/* Industry-Specific Use Cases */}
+            {Object.entries(USE_CASES)
+              .filter(([key]) => key !== 'general')
+              .map(([key, useCase]) => (
               <Link
                 key={key}
                 href={`/create?type=${key}`}
@@ -70,7 +135,7 @@ export default function OnboardingPage() {
                   {useCase.description}
                 </p>
 
-                {/* Role Information - Compact style */}
+                {/* Role Information */}
                 <div className="space-y-2 mb-4">
                   <div className="flex items-center justify-between text-xs">
                     <span className="font-medium text-slate-500 dark:text-slate-400">Authority:</span>
@@ -86,7 +151,7 @@ export default function OnboardingPage() {
                   </div>
                 </div>
 
-                {/* Features - Matching home page style */}
+                {/* Features */}
                 <div className="flex items-center gap-3 pt-3 border-t border-slate-200/60 dark:border-slate-700/60">
                   <div className="flex items-center gap-1">
                     <div className={`h-2 w-2 rounded-full ${useCase.allowsUpdates ? 'bg-emerald-400' : 'bg-amber-400'}`} />
