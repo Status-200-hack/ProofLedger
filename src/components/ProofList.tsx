@@ -6,8 +6,9 @@ import { proofRegistryAbi, proofRegistryAddress } from "@/lib/abi/proofRegistry"
 import Link from "next/link";
 import { encodeProofId } from "@/lib/proofId";
 import { getUseCaseById } from "@/config/useCases";
-import { PencilIcon, EyeIcon } from "@heroicons/react/24/outline";
+import { PencilIcon, EyeIcon, ArrowsRightLeftIcon } from "@heroicons/react/24/outline";
 import { useRouter } from "next/navigation";
+import { generateComparisonUrl } from "@/hooks/useComparisonParams";
 
 type Proof = {
   owner: string;
@@ -34,6 +35,8 @@ export default function ProofList({ refreshKey, onRefresh }: Props) {
   const { address, isConnected } = useAccount();
   const router = useRouter();
   const [isMounted, setIsMounted] = useState(false);
+  const [selectedForComparison, setSelectedForComparison] = useState<number[]>([]);
+  const [comparisonMode, setComparisonMode] = useState(false);
   
   const { data, isLoading, refetch } = useReadContract({
     address: proofRegistryAddress as `0x${string}`,
@@ -150,6 +153,50 @@ export default function ProofList({ refreshKey, onRefresh }: Props) {
     router.push(`/create?${updateParams.toString()}`);
   };
 
+  const handleComparisonToggle = (proofId: number) => {
+    setSelectedForComparison(prev => {
+      if (prev.includes(proofId)) {
+        return prev.filter(id => id !== proofId);
+      } else if (prev.length < 2) {
+        return [...prev, proofId];
+      } else {
+        // Replace the first selected with the new one
+        return [prev[1], proofId];
+      }
+    });
+  };
+
+  const handleCompareSelected = () => {
+    if (selectedForComparison.length === 2) {
+      const [leftId, rightId] = selectedForComparison;
+      router.push(generateComparisonUrl(leftId, rightId));
+    }
+  };
+
+  const handleCancelComparison = () => {
+    setComparisonMode(false);
+    setSelectedForComparison([]);
+  };
+
+  const enableComparisonMode = () => {
+    setComparisonMode(true);
+    setSelectedForComparison([]);
+  };
+
+  // Helper function to check if a group has multiple versions for comparison
+  const hasMultipleVersions = (proofs: CategorizedProof[]): boolean => {
+    const titleGroups: Record<string, CategorizedProof[]> = {};
+    proofs.forEach(proof => {
+      const baseTitle = getBaseTitle(proof.displayTitle);
+      if (!titleGroups[baseTitle]) {
+        titleGroups[baseTitle] = [];
+      }
+      titleGroups[baseTitle].push(proof);
+    });
+    
+    return Object.values(titleGroups).some(group => group.length > 1);
+  };
+
   const groupedProofs = useMemo(() => {
     const groups: Record<string, CategorizedProof[]> = {};
     
@@ -232,11 +279,50 @@ export default function ProofList({ refreshKey, onRefresh }: Props) {
             {isConnected ? "Your on-chain submissions organized by category" : "Connect wallet to view your proofs"}
           </p>
         </div>
-        {isConnected && (
-          <span className="self-start rounded-full bg-indigo-50 px-3 py-1 text-[11px] font-semibold text-indigo-600 dark:bg-indigo-500/20 dark:text-indigo-200 sm:self-auto">
-            {categorizedProofs.length} {categorizedProofs.length === 1 ? "proof" : "proofs"}
-          </span>
-        )}
+        <div className="flex items-center gap-3">
+          {isConnected && (
+            <span className="self-start rounded-full bg-indigo-50 px-3 py-1 text-[11px] font-semibold text-indigo-600 dark:bg-indigo-500/20 dark:text-indigo-200 sm:self-auto">
+              {categorizedProofs.length} {categorizedProofs.length === 1 ? "proof" : "proofs"}
+            </span>
+          )}
+          
+          {/* Comparison Mode Controls */}
+          {isConnected && categorizedProofs.length > 1 && (
+            <div className="flex items-center gap-2">
+              {!comparisonMode ? (
+                <button
+                  onClick={enableComparisonMode}
+                  className="inline-flex items-center gap-1 rounded-full px-3 py-1.5 text-xs font-medium text-purple-600 hover:text-purple-700 hover:bg-purple-50 dark:text-purple-400 dark:hover:text-purple-300 dark:hover:bg-purple-900/20 transition-colors"
+                  title="Compare document versions"
+                >
+                  <ArrowsRightLeftIcon className="h-3 w-3" />
+                  Compare
+                </button>
+              ) : (
+                <div className="flex items-center gap-2">
+                  <span className="text-xs text-slate-600 dark:text-slate-400">
+                    Select 2 proofs ({selectedForComparison.length}/2)
+                  </span>
+                  {selectedForComparison.length === 2 && (
+                    <button
+                      onClick={handleCompareSelected}
+                      className="inline-flex items-center gap-1 rounded-full px-3 py-1.5 text-xs font-medium text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50 dark:text-emerald-400 dark:hover:text-emerald-300 dark:hover:bg-emerald-900/20 transition-colors"
+                    >
+                      <ArrowsRightLeftIcon className="h-3 w-3" />
+                      Compare Selected
+                    </button>
+                  )}
+                  <button
+                    onClick={handleCancelComparison}
+                    className="inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs font-medium text-slate-500 hover:text-slate-700 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-slate-300 dark:hover:bg-slate-800 transition-colors"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
       </div>
 
       {!proofRegistryAddress ? (
@@ -276,14 +362,39 @@ export default function ProofList({ refreshKey, onRefresh }: Props) {
 
                 {/* Proofs in this category */}
                 <div className="space-y-2">
-                  {proofs.map((proof) => (
+                  {proofs.map((proof) => {
+                    const isSelectedForComparison = selectedForComparison.includes(proof.contractId);
+                    
+                    return (
                     <div
                       key={proof.contractId}
-                      className="rounded-2xl border border-zinc-200/70 bg-white/90 px-4 py-3 shadow-sm dark:border-zinc-800 dark:bg-zinc-900/70"
+                      className={`rounded-2xl border px-4 py-3 shadow-sm transition-all ${
+                        comparisonMode && isSelectedForComparison
+                          ? 'border-purple-300 bg-purple-50/90 dark:border-purple-600 dark:bg-purple-900/30'
+                          : 'border-zinc-200/70 bg-white/90 dark:border-zinc-800 dark:bg-zinc-900/70'
+                      }`}
                     >
                       <div className="flex items-center justify-between">
                         <div className="min-w-0 flex-1">
                           <div className="flex items-center gap-2">
+                            {/* Comparison Selection Checkbox */}
+                            {comparisonMode && (
+                              <button
+                                onClick={() => handleComparisonToggle(proof.contractId)}
+                                className={`flex h-4 w-4 items-center justify-center rounded border-2 transition-colors ${
+                                  isSelectedForComparison
+                                    ? 'border-purple-500 bg-purple-500'
+                                    : 'border-slate-300 hover:border-purple-400 dark:border-slate-600'
+                                }`}
+                              >
+                                {isSelectedForComparison && (
+                                  <svg className="h-2.5 w-2.5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                                  </svg>
+                                )}
+                              </button>
+                            )}
+                            
                             <p className="truncate text-sm font-semibold text-zinc-900 dark:text-white">
                               {proof.displayTitle}
                             </p>
@@ -316,30 +427,33 @@ export default function ProofList({ refreshKey, onRefresh }: Props) {
                         </div>
 
                         {/* Action Buttons */}
-                        <div className="flex items-center gap-2 ml-4">
-                          <Link
-                            href={`/verify/${encodeProofId(proof.contractId)}`}
-                            className="inline-flex items-center gap-1 rounded-full px-3 py-1.5 text-xs font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-slate-200 dark:hover:bg-slate-800 transition-colors"
-                            title="View proof"
-                          >
-                            <EyeIcon className="h-3 w-3" />
-                            View
-                          </Link>
-
-                          {useCase.allowsUpdates && (
-                            <button
-                              onClick={() => handleUpdate(proof)}
-                              className="inline-flex items-center gap-1 rounded-full px-3 py-1.5 text-xs font-medium text-blue-600 hover:text-blue-700 hover:bg-blue-50 dark:text-blue-400 dark:hover:text-blue-300 dark:hover:bg-blue-900/20 transition-colors"
-                              title="Update document"
+                        {!comparisonMode && (
+                          <div className="flex items-center gap-2 ml-4">
+                            <Link
+                              href={`/verify/${encodeProofId(proof.contractId)}`}
+                              className="inline-flex items-center gap-1 rounded-full px-3 py-1.5 text-xs font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-slate-200 dark:hover:bg-slate-800 transition-colors"
+                              title="View proof"
                             >
-                              <PencilIcon className="h-3 w-3" />
-                              Update
-                            </button>
-                          )}
-                        </div>
+                              <EyeIcon className="h-3 w-3" />
+                              View
+                            </Link>
+
+                            {useCase.allowsUpdates && (
+                              <button
+                                onClick={() => handleUpdate(proof)}
+                                className="inline-flex items-center gap-1 rounded-full px-3 py-1.5 text-xs font-medium text-blue-600 hover:text-blue-700 hover:bg-blue-50 dark:text-blue-400 dark:hover:text-blue-300 dark:hover:bg-blue-900/20 transition-colors"
+                                title="Update document"
+                              >
+                                <PencilIcon className="h-3 w-3" />
+                                Update
+                              </button>
+                            )}
+                          </div>
+                        )}
                       </div>
                     </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
             );

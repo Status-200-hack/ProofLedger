@@ -51,8 +51,15 @@ export default function OnboardingPage() {
               className="group relative rounded-2xl border border-indigo-200/70 bg-gradient-to-br from-indigo-50/90 to-slate-50/80 p-6 shadow-md shadow-indigo-900/10 backdrop-blur transition-all duration-300 hover:shadow-xl hover:shadow-indigo-200/50 hover:-translate-y-1 dark:border-indigo-700/50 dark:bg-gradient-to-br dark:from-indigo-900/30 dark:to-slate-900/70 dark:hover:shadow-indigo-900/50"
             >
               {/* Popular Badge */}
-              <div className="absolute -top-3 -right-3 bg-gradient-to-r from-indigo-500 to-purple-600 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg border-2 border-white dark:border-slate-800 z-10">
-                ⭐ Popular
+              <div className="absolute -top-2 -right-2 z-10">
+                <div className="relative">
+                  <div className="bg-gradient-to-r from-amber-400 via-orange-500 to-red-500 text-white text-xs font-bold px-4 py-2 rounded-full shadow-lg border-2 border-white dark:border-slate-800 flex items-center gap-1">
+                    <span className="text-sm">⭐</span>
+                    <span>Popular</span>
+                  </div>
+                  {/* Subtle glow effect */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-amber-400 via-orange-500 to-red-500 rounded-full blur-sm opacity-30 -z-10"></div>
+                </div>
               </div>
               
               {/* Icon and Arrow */}
